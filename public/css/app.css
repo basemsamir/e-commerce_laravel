@@ -11423,7 +11423,8 @@ ul.dropdown-menu.drp-mnu li a i {
 /*-- cart --*/
 .product_list_header {
   float: left;
-  margin-left: 7em;
+  margin-left: 4em;
+      margin-top: 0.5em;
 }
 
 .snipcart-details {
@@ -11454,7 +11455,7 @@ ul.dropdown-menu.drp-mnu li a i {
   background: #84C639;
 }
 
-.product_list_header input.button {
+.product_list_header a.button {
   color: #fff;
   font-size: 14px;
   outline: none;

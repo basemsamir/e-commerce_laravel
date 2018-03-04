@@ -8,7 +8,7 @@
         <div class="w3l_banner_nav_right_banner">
           <h3>Make your <span>food</span> with Spicy.</h3>
           <div class="more">
-            <a href="products.html" class="button--saqui button--round-l button--text-thick" data-text="Shop now">Shop now</a>
+            <a href="{{ route('home.bestdeals') }}" class="button--saqui button--round-l button--text-thick" data-text="Shop now">Shop now</a>
           </div>
         </div>
       </li>
@@ -16,7 +16,7 @@
         <div class="w3l_banner_nav_right_banner1">
           <h3>Make your <span>food</span> with Spicy.</h3>
           <div class="more">
-            <a href="products.html" class="button--saqui button--round-l button--text-thick" data-text="Shop now">Shop now</a>
+            <a href="{{ route('home.bestdeals') }}" class="button--saqui button--round-l button--text-thick" data-text="Shop now">Shop now</a>
           </div>
         </div>
       </li>
@@ -24,7 +24,7 @@
         <div class="w3l_banner_nav_right_banner2">
           <h3>upto <i>50%</i> off.</h3>
           <div class="more">
-            <a href="products.html" class="button--saqui button--round-l button--text-thick" data-text="Shop now">Shop now</a>
+            <a href="{{ route('home.bestdeals') }}" class="button--saqui button--round-l button--text-thick" data-text="Shop now">Shop now</a>
           </div>
         </div>
       </li>
@@ -46,7 +46,7 @@
   </script>
 <!-- //flexSlider -->
 @stop
-@section('topBrands')
+@section('belowBanner')
 <div class="banner_bottom">
     <div class="wthree_banner_bottom_left_grid_sub">
     </div>
@@ -100,14 +100,17 @@
                     <h4>{!! $hot_product->product->discount_price !!} <span>${!! $hot_product->product->original_price !!}</span></h4>
                   </div>
                   <div class="snipcart-details top_brand_home_details">
-                    <form action="checkout.html" method="post">
+                    <form  method="post" onsubmit="sendItemData(event);">
                       <fieldset>
+                        {!! csrf_field(); !!}
                         <input type="hidden" name="cmd" value="_cart" />
+                        <input type="hidden" name="user_token" value="{{ Auth::user()->api_token }}">
                         <input type="hidden" name="add" value="1" />
                         <input type="hidden" name="business" value=" " />
-                        <input type="hidden" name="item_name" value="Fortune Sunflower Oil" />
-                        <input type="hidden" name="amount" value="7.99" />
-                        <input type="hidden" name="discount_amount" value="1.00" />
+                        <input type="hidden" name="item_id" value="{{$hot_product->product->id}}" />
+                        <input type="hidden" name="item_name" value="{{$hot_product->product->title}}" />
+                        <input type="hidden" name="amount" value="{{$hot_product->product->in_stock}}" />
+                        <input type="hidden" name="discount_amount" value="{{$hot_product->product->original_price-$hot_product->product->discount_price}}" />
                         <input type="hidden" name="currency_code" value="USD" />
                         <input type="hidden" name="return" value=" " />
                         <input type="hidden" name="cancel_return" value=" " />
@@ -201,4 +204,27 @@
   </div>
 </div>
 <!-- //fresh-vegetables -->
+@stop
+
+@section('javascript')
+<script>
+
+  function sendItemData(event){
+    event.preventDefault();
+    $.ajax({
+      url: 'api/cart/add',
+      type: 'POST',
+      data: $(event.target).serialize(),
+      success:function(response){
+        alert(response.message);
+      },
+      error:function(error){
+        alert(error.responseJSON.error);
+        console.log(error);
+      }
+    });
+
+  }
+</script>
+
 @stop

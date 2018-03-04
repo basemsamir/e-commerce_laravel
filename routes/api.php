@@ -16,3 +16,7 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::post('/cart/add','CartController@store_item')->name('api.cart.add');
+Route::delete('/cart/delete','CartController@delete_item')->name('api.cart.delete');

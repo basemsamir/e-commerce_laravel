@@ -7,7 +7,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!DOCTYPE html>
 <html>
 <head>
-<title>Grocery Store a Ecommerce Online Shopping Category Flat Bootstrap Responsive Website Template | Home :: w3layouts</title>
+<title>Grocery Store a Ecommerce Online Shopping website</title>
 <!-- for-mobile-apps -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -51,7 +51,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!-- header -->
 	<div class="agileits_header">
 		<div class="w3l_offers">
-			<a href="products.html">Today's special Offers !</a>
+			<a href="{{ route('home.bestdeals') }}">Today's special Offers !</a>
 		</div>
 		<div class="w3l_search">
 			<form action="{{ route('home.searchProduct')}}" method="post" onsubmit="return searchProduct();">
@@ -61,23 +61,30 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			</form>
 		</div>
 		<div class="product_list_header">
-			<form action="#" method="post" class="last">
-                <fieldset>
-                    <input type="hidden" name="cmd" value="_cart" />
-                    <input type="hidden" name="display" value="1" />
-                    <input type="submit" name="submit" value="View your cart" class="button" />
-                </fieldset>
-            </form>
+			<a href="{{route('cart.index')}}" class="button">View your cart</a>
+
 		</div>
 		<div class="w3l_header_right">
 			<ul>
 				<li class="dropdown profile_details_drop">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user" aria-hidden="true"></i><span class="caret"></span></a>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						@if(Auth::id())
+							{{ Auth::user()->name }}
+						@endif
+						<i class="fa fa-user" aria-hidden="true"></i><span class="caret"></span></a>
 					<div class="mega-dropdown-menu">
 						<div class="w3ls_vegetables">
 							<ul class="dropdown-menu drp-mnu">
-								<li><a href="login.html">Login</a></li>
-								<li><a href="login.html">Sign Up</a></li>
+								@if(Auth::guest())
+									<li><a href="{{route('home.auth')}}">Sign In | Sign up</a></li>
+								@else
+									<li>
+										<form id="logoutForm" action="{{route('logout')}}" method="post">
+											{{ csrf_field() }}
+											<a href="#"  onclick="$('#logoutForm').submit()">Logout</a>
+										</form>
+									</li>
+								@endif
 							</ul>
 						</div>
 					</div>
@@ -85,7 +92,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			</ul>
 		</div>
 		<div class="w3l_header_right1">
-			<h2><a href="mail.html">Contact Us</a></h2>
+			<h2><a href="{{ route('home.contactus')}}">Contact Us</a></h2>
 		</div>
 		<div class="clearfix"> </div>
 	</div>
@@ -108,7 +115,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<div class="logo_products">
 		<div class="container">
 			<div class="w3ls_logo_products_left">
-				<h1><a href="{!! url('/') !!}"><span>Grocery</span> Store</a></h1>
+				<h1><a href="{!! route('home') !!}"><span>Grocery</span> Store</a></h1>
 			</div>
 			<div class="w3ls_logo_products_left1">
 				<ul class="special_items">
@@ -172,8 +179,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		<div class="clearfix"></div>
 	</div>
 <!-- banner -->
-
-	@yield('topBrands')
+	@yield('belowBanner')
 <!-- newsletter -->
 	<div class="newsletter">
 		<div class="container">
@@ -261,6 +267,7 @@ $(document).ready(function(){
 			});
 	</script>
 <!-- //here ends scrolling icon -->
+<!--
 <script src="{!! asset('js/minicart.js') !!}"></script>
 <script>
 		paypal.minicart.render();
@@ -270,7 +277,6 @@ $(document).ready(function(){
 				len = items.length,
 				total = 0,
 				i;
-
 			// Count the number of each item in the cart
 			for (i = 0; i < len; i++) {
 				total += items[i].get('quantity');
@@ -283,6 +289,8 @@ $(document).ready(function(){
 		});
 
 	</script>
+-->
+	@yield('javascript')
 	<script>
 	function searchProduct(){
 		if($("#Product").val() != "Search a product...")
