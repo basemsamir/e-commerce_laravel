@@ -30,6 +30,10 @@ class CartController extends Controller
     }
     public function store_item()
     {
+        if(!request('user_token'))
+        {
+          return response()->json(['success'=>'false','message'=>'Please signup or login!']);
+        }
         $session_id = request('user_token');
         $product_id = request('item_id');
         // Get Product Detils by ID

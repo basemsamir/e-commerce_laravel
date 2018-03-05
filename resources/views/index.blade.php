@@ -104,7 +104,9 @@
                       <fieldset>
                         {!! csrf_field(); !!}
                         <input type="hidden" name="cmd" value="_cart" />
-                        <input type="hidden" name="user_token" value="{{ Auth::user()->api_token }}">
+                        @if(Auth::user())
+                          <input type="hidden" name="user_token" value="{{ Auth::user()->api_token }}">
+                        @endif
                         <input type="hidden" name="add" value="1" />
                         <input type="hidden" name="business" value=" " />
                         <input type="hidden" name="item_id" value="{{$hot_product->product->id}}" />
@@ -209,22 +211,21 @@
 @section('javascript')
 <script>
 
-  function sendItemData(event){
-    event.preventDefault();
-    $.ajax({
-      url: 'api/cart/add',
-      type: 'POST',
-      data: $(event.target).serialize(),
-      success:function(response){
-        alert(response.message);
-      },
-      error:function(error){
-        alert(error.responseJSON.error);
-        console.log(error);
-      }
-    });
+function sendItemData(event){
+  event.preventDefault();
+  $.ajax({
+    url: '{{ route("api.cart.add") }}',
+    type: 'POST',
+    data: $(event.target).serialize(),
+    success:function(response){
+      alert(response.message);
+    },
+    error:function(error){
+      alert(error.responseJSON.error);
+      console.log(error);
+    }
+  });
 
-  }
+}
 </script>
-
 @stop

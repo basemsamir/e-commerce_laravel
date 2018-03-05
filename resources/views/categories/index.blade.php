@@ -40,20 +40,7 @@
 									<h4>${{$product->original_price}} <span>${{$product->discount_price}}</span></h4>
 								</div>
 								<div class="snipcart-details">
-									<form action="#" method="post">
-										<fieldset>
-											<input type="hidden" name="cmd" value="_cart">
-											<input type="hidden" name="add" value="1">
-											<input type="hidden" name="business" value=" ">
-											<input type="hidden" name="item_name" value="knorr instant soup">
-											<input type="hidden" name="amount" value="3.00">
-											<input type="hidden" name="discount_amount" value="1.00">
-											<input type="hidden" name="currency_code" value="USD">
-											<input type="hidden" name="return" value=" ">
-											<input type="hidden" name="cancel_return" value=" ">
-											<input type="submit" name="submit" value="Add to cart" class="button">
-										</fieldset>
-									</form>
+									@include('products.form')
 								</div>
 							</div>
 						</figure>
@@ -65,4 +52,25 @@
 		<div class="clearfix"> </div>
 	</div>
 </div>
+@stop
+@section('javascript')
+<script>
+
+function sendItemData(event){
+  event.preventDefault();
+  $.ajax({
+    url: '{{ route("api.cart.add") }}',
+    type: 'POST',
+    data: $(event.target).serialize(),
+    success:function(response){
+      alert(response.message);
+    },
+    error:function(error){
+      alert(error.responseJSON.error);
+      console.log(error);
+    }
+  });
+
+}
+</script>
 @stop
